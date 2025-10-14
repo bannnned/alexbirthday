@@ -9,11 +9,20 @@ import NavigationArrows from "./NavigationArrows";
 import { useGame } from "../context/GameContext";
 import { scenes } from "../data/scenes";
 import LifeLossNotification from "./LifeLossNotification";
+import FeedbackBox from "./FeedbackBox";
+import FeedbackNavigation from "./FeedbackNavigation";
 
 const GameScreen: React.FC = () => {
-  const { state } = useGame();
+  const { state, dispatch } = useGame();
   const scene = scenes.find((s) => s.id === state.currentSceneId)!;
-  const line = scene.dialogue[state.currentLineIndex];
+
+  // Определяем, что сейчас показываем
+  const isShowingFeedback = state.currentFeedbackIndex !== null;
+  const currentLine = isShowingFeedback
+    ? scene.choices[state.selectedChoiceIndex!].feedback[
+        state.currentFeedbackIndex!
+      ]
+    : scene.dialogue[state.currentLineIndex];
 
   const [showLifeLoss, setShowLifeLoss] = useState(false);
   const [prevLives, setPrevLives] = useState(state.lives);
@@ -30,19 +39,53 @@ const GameScreen: React.FC = () => {
     setShowLifeLoss(false);
   };
 
+  // Определяем позицию персонажа для feedback
+  const getFeedbackPosition = (
+    character: string
+  ): "left" | "right" | "center" => {
+    if (character === "Саша") return "right";
+    if (character === "") return "center"; // для системных реплик
+    return "left";
+  };
+
   return (
     <>
       <Background image={scene.background} />
 
-      <CharacterSprite
-        name={line.speaker + (line?.mood ?? "")}
-        side={line.position}
-      />
+      {!isShowingFeedback ? (
+        <CharacterSprite
+          name={currentLine.speaker + (currentLine.mood ?? "") + scene.id}
+          side={currentLine.position}
+        />
+      ) : currentLine.speaker !== "" ? (
+        <CharacterSprite
+          name={currentLine.speaker + (currentLine.mood ?? "") + scene.id}
+          side={getFeedbackPosition(currentLine.speaker)}
+        />
+      ) : null}
 
       <HUD />
-      <DialogueBox />
-      <ChoiceButtons />
-      <NavigationArrows />
+
+      {isShowingFeedback ? (
+        <FeedbackBox feedback={currentLine} />
+      ) : (
+        <DialogueBox />
+      )}
+
+      {isShowingFeedback ? (
+        <FeedbackNavigation
+          currentIndex={state.currentFeedbackIndex!}
+          total={scene.choices[state.selectedChoiceIndex!].feedback.length}
+          onPrev={() => dispatch({ type: "PREV_FEEDBACK" })}
+          onNext={() => dispatch({ type: "NEXT_FEEDBACK" })}
+          isLast={state.currentFeedbackIndex === scene.choices[state.selectedChoiceIndex!].feedback.length - 1}
+        />
+      ) : (
+        <>
+          <ChoiceButtons />
+          <NavigationArrows />
+        </>
+      )}
 
       <LifeLossNotification
         isVisible={showLifeLoss}
