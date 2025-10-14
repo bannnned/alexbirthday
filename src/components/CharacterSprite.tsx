@@ -103,7 +103,7 @@ const characterImages: Record<string, string | undefined> = {
 
 interface CharacterSpriteProps {
   name: string;
-  side: "left" | "right" | "center";
+  side?: "left" | "right" | "center";
 }
 
 const CharacterSprite: React.FC<CharacterSpriteProps> = ({ name, side = 'left' }) => {
