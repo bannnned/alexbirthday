@@ -21,7 +21,7 @@ const HUD: React.FC = () => {
         textAlign: 'right',
       }}
     >
-      <div>Возраст: {currentScene.age} лет</div>
+      <div>Возраст: {currentScene.age}</div>
       <div>Место: {currentScene.location}</div>
       <div>
         Жизни: {'❤️'.repeat(state.lives)}

@@ -11,6 +11,18 @@ const ChoiceButtons: React.FC = () => {
 
   if (!isAtEnd || isShowingFeedback) return null; // ← добавили проверку
 
+  const shuffleArray = <T,>(array: T[]): T[] => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]]; // обмен элементами
+    }
+    return array
+  }
+
+  const shuffledArray = shuffleArray(scene.choices)
+
+  // console.log({shuffledArray})
+
   return (
     <div
       style={{
@@ -24,7 +36,7 @@ const ChoiceButtons: React.FC = () => {
         width: "60%",
       }}
     >
-      {scene.choices.map((choice, idx) => (
+      {shuffledArray.map((choice, idx) => (
         <button
           key={idx}
           onClick={() =>

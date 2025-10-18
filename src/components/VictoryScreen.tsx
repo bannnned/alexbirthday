@@ -2,7 +2,7 @@
 import React from "react";
 import { useGame } from "../context/GameContext";
 
-const TELEGRAM_LINK = "https://t.me/ksenia_username"; // ← ЗАМЕНИ НА РЕАЛЬНУЮ ССЫЛКУ!
+const TELEGRAM_LINK = "https://t.me/senyaa11"; // ← ЗАМЕНИ НА РЕАЛЬНУЮ ССЫЛКУ!
 
 const VictoryScreen: React.FC = () => {
   const { dispatch } = useGame();

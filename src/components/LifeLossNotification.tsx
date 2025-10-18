@@ -3,13 +3,16 @@ import React, { useState, useEffect } from 'react';
 
 interface LifeLossNotificationProps {
   isVisible: boolean;
+  hasSceneChanged: boolean;
+  feedbackIndex: number | null;
   onHidden: () => void;
 }
 
-const LifeLossNotification: React.FC<LifeLossNotificationProps> = ({ isVisible, onHidden }) => {
+const LifeLossNotification: React.FC<LifeLossNotificationProps> = ({ isVisible, hasSceneChanged, feedbackIndex, onHidden }) => {
   const [show, setShow] = useState(isVisible);
 
   useEffect(() => {
+    console.log({isVisible})
     if (isVisible) {
       setShow(true);
       const timer = setTimeout(() => {
@@ -17,11 +20,22 @@ const LifeLossNotification: React.FC<LifeLossNotificationProps> = ({ isVisible, 
         // Дадим время на завершение анимации перед вызовом onHidden
         const hideTimer = setTimeout(onHidden, 300); // 300ms = длительность fade-out
         return () => clearTimeout(hideTimer);
-      }, 1700); // показываем 1.7 секунды
+      }, 1000); // показываем 1 секунду
 
       return () => clearTimeout(timer);
     }
+
+    
   }, [isVisible, onHidden]);
+
+  useEffect(() => {
+    console.log({hasSceneChanged})
+    // if(hasSceneChanged) {
+      setShow(false)
+    // }
+  }, [hasSceneChanged, feedbackIndex])
+
+  console.log({show})
 
   if (!show) return null;
 

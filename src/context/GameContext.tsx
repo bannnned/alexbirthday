@@ -14,7 +14,9 @@ type GameAction =
   | { type: "FINISH_FEEDBACK"; sceneId: number; isCorrect: boolean }
   | { type: "RESTART_FROM_CURRENT" }
   | { type: "RESET_GAME" }
-  | { type: "FINISH_GAME" };
+  | { type: "FINISH_GAME" }
+  | { type: "START_GAME" }
+  | { type: "SET_SCENE_STARTED"; payload: boolean };
 
 const initialState: GameState = {
   currentSceneId: 1,
@@ -26,6 +28,8 @@ const initialState: GameState = {
   isVictory: false,
   currentFeedbackIndex: null,
   selectedChoiceIndex: null,
+  hasStarted: false, // по умолчанию — не начата
+  currentSceneStarted: false,
 };
 
 const STORAGE_KEY = "happy24_game_state";
@@ -47,6 +51,23 @@ function saveState(state: GameState) {
 
 function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
+    case "START_GAME": {
+      return {
+        ...state,
+        hasStarted: true,
+        currentSceneId: 1,
+        currentLineIndex: 0,
+        lives: 3,
+        completedScenes: [],
+        choicesHistory: [],
+        isGameOver: false,
+        isVictory: false,
+        currentFeedbackIndex: null,
+        selectedChoiceIndex: null,
+        currentSceneStarted: false,
+      };
+    }
+
     case "NEXT_LINE": {
       const scene = scenes[state.currentSceneId - 1];
       if (!scene) return state;
@@ -78,17 +99,16 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       const { choiceIndex, sceneId } = action;
 
       let newLives = state.lives;
-      let isGameOver = state.isGameOver;
+      // let isGameOver = state.isGameOver;
       let isVictory = state.isVictory;
-      const scene = scenes.find(s => s.id === sceneId)!;
+      const scene = scenes.find((s) => s.id === sceneId)!;
       const choice = scene.choices[choiceIndex];
       const isCorrect = choice.isCorrect;
-
       if (!isCorrect) {
         newLives -= 1;
-        if (newLives <= 0) {
-          isGameOver = true;
-        }
+        // if (newLives <= 0) {
+        //   isGameOver = true;
+        // }
       }
 
       if (sceneId === 13 && isCorrect) {
@@ -98,10 +118,12 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       // Сохраняем выбор, но НЕ переходим к следующему этапу
       return {
         ...state,
+        lives: newLives,
         selectedChoiceIndex: choiceIndex,
         currentFeedbackIndex: 0, // начинаем с первой реплики feedback
-        isGameOver,
+        // isGameOver,
         isVictory,
+        hasStarted: true,
       };
     }
 
@@ -113,16 +135,12 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       if (nextIndex >= choice.feedback.length) {
         // Feedback закончился — теперь обрабатываем результат
         const isCorrect = choice.isCorrect;
-        let newLives = state.lives;
         let isGameOver = state.isGameOver;
         let isVictory = state.isVictory;
         let nextSceneId = state.currentSceneId;
 
-        if (!isCorrect) {
-          newLives -= 1;
-          if (newLives <= 0) {
-            isGameOver = true;
-          }
+        if (!isCorrect && state.lives <= 0) {
+          isGameOver = true;
         }
 
         if (!isGameOver && state.currentSceneId < TOTAL_SCENES) {
@@ -134,7 +152,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         return {
           currentSceneId: isGameOver ? state.currentSceneId : nextSceneId,
           currentLineIndex: 0,
-          lives: isGameOver ? 3 : newLives,
+          lives: state.lives,
           completedScenes: isGameOver
             ? state.completedScenes
             : [...state.completedScenes, state.currentSceneId],
@@ -149,6 +167,8 @@ function gameReducer(state: GameState, action: GameAction): GameState {
           isVictory,
           currentFeedbackIndex: null,
           selectedChoiceIndex: null,
+          hasStarted: true,
+          currentSceneStarted: false,
         };
       }
 
@@ -167,6 +187,12 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         ),
       };
 
+    case "SET_SCENE_STARTED":
+      return {
+        ...state,
+        currentSceneStarted: action.payload,
+      };
+
     case "RESTART_FROM_CURRENT":
       return {
         ...initialState,
@@ -177,7 +203,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       };
 
     case "RESET_GAME":
-      const freshState = { ...initialState };
+      const freshState = { ...initialState, currentSceneStarted: false };
       return freshState;
 
     case "FINISH_GAME":
@@ -221,6 +247,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
         : [],
       isGameOver: Boolean(saved.isGameOver),
       isVictory: Boolean(saved.isVictory),
+      hasStarted: Boolean(saved.hasStarted),
     };
   });
 

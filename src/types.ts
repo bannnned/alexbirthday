@@ -52,4 +52,6 @@ export interface GameState {
   isVictory: boolean;
   currentFeedbackIndex: number | null; // null = нет feedback, число = индекс реплики
   selectedChoiceIndex: number | null;  // чтобы знать, чей feedback показывать
+  hasStarted: boolean; // ← новое поле
+  currentSceneStarted: boolean; 
 }

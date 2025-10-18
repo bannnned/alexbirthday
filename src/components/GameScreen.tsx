@@ -11,6 +11,7 @@ import { scenes } from "../data/scenes";
 import LifeLossNotification from "./LifeLossNotification";
 import FeedbackBox from "./FeedbackBox";
 import FeedbackNavigation from "./FeedbackNavigation";
+import SceneIntro from "./SceneIntro";
 
 const GameScreen: React.FC = () => {
   const { state, dispatch } = useGame();
@@ -26,14 +27,37 @@ const GameScreen: React.FC = () => {
 
   const [showLifeLoss, setShowLifeLoss] = useState(false);
   const [prevLives, setPrevLives] = useState(state.lives);
+  const [prevSceneId, setPrevSceneId] = useState(state.currentSceneId);
 
   // Проверяем, уменьшилось ли количество жизней
   useEffect(() => {
+    console.log(state.lives, { prevLives });
     if (state.lives < prevLives && !state.isGameOver) {
       setShowLifeLoss(true);
+    } else if (state.currentSceneId !== prevSceneId) {
+      setShowLifeLoss(false);
     }
     setPrevLives(state.lives);
-  }, [state.lives, prevLives, state.isGameOver]);
+    setPrevSceneId(state.currentSceneId);
+  }, [
+    state.lives,
+    state.currentSceneId,
+    prevLives,
+    prevSceneId,
+    state.isGameOver,
+  ]);
+
+  console.log({ showLifeLoss });
+
+  // useEffect(() => {
+  //   console.log({currentLine})
+  //   if (showLifeLoss) {
+  //     setShowLifeLoss(false);
+  //   }
+  // }, [
+  //   currentLine,
+  //   showLifeLoss
+  // ]);
 
   const handleLifeLossHidden = () => {
     setShowLifeLoss(false);
@@ -43,26 +67,20 @@ const GameScreen: React.FC = () => {
   const getFeedbackPosition = (
     character: string
   ): "left" | "right" | "center" => {
-    if (character === "Саша") return "right";
+    const isSasha = character === "Саша";
+    if (isSasha) return "left";
     if (character === "") return "center"; // для системных реплик
-    return "left";
+    return "right";
   };
 
   return (
     <>
       <Background image={scene.background} />
 
-      {!isShowingFeedback ? (
-        <CharacterSprite
-          name={currentLine.speaker + (currentLine.mood ?? "") + scene.id}
-          side={currentLine.position}
-        />
-      ) : currentLine.speaker !== "" ? (
-        <CharacterSprite
-          name={currentLine.speaker + (currentLine.mood ?? "") + scene.id}
-          side={getFeedbackPosition(currentLine.speaker)}
-        />
-      ) : null}
+      <CharacterSprite
+        name={currentLine.speaker + (currentLine.mood ?? "") + scene.id}
+        side={getFeedbackPosition(currentLine.speaker)}
+      />
 
       <HUD />
 
@@ -78,7 +96,10 @@ const GameScreen: React.FC = () => {
           total={scene.choices[state.selectedChoiceIndex!].feedback.length}
           onPrev={() => dispatch({ type: "PREV_FEEDBACK" })}
           onNext={() => dispatch({ type: "NEXT_FEEDBACK" })}
-          isLast={state.currentFeedbackIndex === scene.choices[state.selectedChoiceIndex!].feedback.length - 1}
+          isLast={
+            state.currentFeedbackIndex ===
+            scene.choices[state.selectedChoiceIndex!].feedback.length - 1
+          }
         />
       ) : (
         <>
@@ -90,7 +111,11 @@ const GameScreen: React.FC = () => {
       <LifeLossNotification
         isVisible={showLifeLoss}
         onHidden={handleLifeLossHidden}
+        hasSceneChanged={state.currentSceneId !== prevSceneId}
+        feedbackIndex={state.currentFeedbackIndex}
       />
+
+      <SceneIntro />
     </>
   );
 };
