@@ -8,6 +8,7 @@ const SceneIntro: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const scene = scenes.find(s => s.id === state.currentSceneId)!;
 
+ 
   // Показываем плашку при начале этапа
   useEffect(() => {
     if (!state.currentSceneStarted) {
