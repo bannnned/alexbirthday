@@ -26,8 +26,10 @@ import sasha7stage from "../assets/characters/sasha-7-stage.png";
 import maxim7stage from "../assets/characters/maxim-7-stage.png";
 import maximSad3Stage from "../assets/characters/maxim-sad-7-stage.png";
 
-// 7 stage
+// 8 stage
 import sasha8stage from "../assets/characters/sasha-8-stage.png";
+import sashaHappy8stage from "../assets/characters/sasha-happy-8-stage.png";
+import sashaSad8stage from "../assets/characters/sasha-sad-8-stage.png";
 
 // 9 stage
 import natasha9 from "../assets/characters/natasha9.png";
@@ -42,9 +44,9 @@ import ksuSad10 from "../assets/characters/ksu-sad-10.png";
 
 // 12 stage
 import sasha12Stage from "../assets/characters/sahsa-12-stage.png";
-import karina12 from "../assets/characters/natasha9.png";
-import karina12sad from "../assets/characters/grisha9.png";
-import karina12happy from "../assets/characters/timur9.png";
+import karina12 from "../assets/characters/karina-12.png";
+import karina12sad from "../assets/characters/karina-12-happy.png";
+import karina12happy from "../assets/characters/karina-12-sad.png";
 
 const characterImages: Record<string, string | undefined> = {
   // 1 stage
@@ -92,6 +94,8 @@ const characterImages: Record<string, string | undefined> = {
 
   // 8 stage
   Саша8: sasha8stage,
+  СашаВеселый8: sashaHappy8stage,
+  СашаГрустный8: sashaSad8stage,
 
   // 9 stage
   Гриша9: grisha9,

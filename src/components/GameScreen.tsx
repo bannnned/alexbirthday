@@ -47,18 +47,6 @@ const GameScreen: React.FC = () => {
     state.isGameOver,
   ]);
 
-  console.log({ showLifeLoss });
-
-  // useEffect(() => {
-  //   console.log({currentLine})
-  //   if (showLifeLoss) {
-  //     setShowLifeLoss(false);
-  //   }
-  // }, [
-  //   currentLine,
-  //   showLifeLoss
-  // ]);
-
   const handleLifeLossHidden = () => {
     setShowLifeLoss(false);
   };

@@ -26,6 +26,7 @@ const StartScreen: React.FC = () => {
         fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
       }}
     >
+      <h1>Happy 24th Birthday</h1>
 
       <div
         style={{
