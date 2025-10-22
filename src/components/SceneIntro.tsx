@@ -46,7 +46,7 @@ const SceneIntro: React.FC = () => {
       <div style={{ fontSize: "1.1rem", marginBottom: "8px" }}>
         {scene.location}
       </div>
-      <div style={{ fontSize: "2.2rem", fontWeight: "bold" }}>{scene.age}</div>
+      <div style={{ fontSize: "2.2rem", fontWeight: "bold" }}>Возраст: {scene.age}</div>
     </div>
   );
 };
