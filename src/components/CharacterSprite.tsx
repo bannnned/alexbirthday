@@ -20,6 +20,21 @@ import trainerHappy2Stage from "../assets/characters/trainer-happy-2-stage.png";
 // 3 stage
 import dadSad3Stage from "../assets/characters/dad-sad-2-stage.png";
 import dad3Stage from "../assets/characters/dad-2-stage.png";
+import sasha3Stage from "../assets/characters/sasha-3-stage.png";
+
+// 4 stage
+import nik4Stage from "../assets/characters/nik-4-stage.png";
+import nikSad4Stage from "../assets/characters/nik-sad-4-stage.png";
+import teacher4Stage from "../assets/characters/teacher-4-stage.png";
+import sasha4Stage from "../assets/characters/sasha-4-stage.png";
+import kirill4Stage from "../assets/characters/kirill-4-stage.png";
+
+// 5 stage
+import sasha5Stage from "../assets/characters/sasha-5-stage.png";
+
+// 6 stage
+import dasha6Stage from "../assets/characters/dasha-6-stage.png";
+import anton6Stage from "../assets/characters/anton-6-stage.png";
 
 // 7 stage
 import sasha7stage from "../assets/characters/sasha-7-stage.png";
@@ -38,9 +53,17 @@ import grisha9 from "../assets/characters/grisha9.png";
 import timur9 from "../assets/characters/timur9.png";
 
 // 10 stage
+import sasha10Stage from "../assets/characters/sasha-10-stage.png";
 import ksu10 from "../assets/characters/ksu-10.png";
 import ksu10Happy from "../assets/characters/ksu-10-happy.png";
 import ksuSad10 from "../assets/characters/ksu-sad-10.png";
+
+// 11 stage
+import sasha11Stage from "../assets/characters/sasha-11-stage.png";
+import sashaNotCare11Stage from "../assets/characters/sasha-not-care-11-stage.png";
+import dima11 from "../assets/characters/dima-11-stage.png";
+import dimaSad11 from "../assets/characters/dima-sad-11-stage.png";
+import dimaHappy11 from "../assets/characters/dima-happy-11-stage.png";
 
 // 12 stage
 import sasha12Stage from "../assets/characters/sahsa-12-stage.png";
@@ -68,24 +91,25 @@ const characterImages: Record<string, string | undefined> = {
   // 3 stage
   Папа3: dad3Stage,
   ПапаГрустный3: dadSad3Stage,
-  Саша3: undefined,
+  Саша3: sasha3Stage,
 
   // 4 stage
-  Саша4: undefined,
-  Кирилл4: undefined,
-  Никита4: undefined,
-  Учитель4: undefined,
-  Мама4: undefined,
+  Саша4: sasha4Stage,
+  Кирилл4: kirill4Stage,
+  Никита4: nik4Stage,
+  НикитаГрустный4: nikSad4Stage,
+  Учитель4: teacher4Stage,
+  Мама4: momAngryFirstStage,
 
   // 5 stage
-  Саша5: undefined,
+  Саша5: sasha5Stage,
   МамаЗлая5: momAngryFirstStage,
   Мама5: momHappyFirstStage,
 
   // 6 stage
-  Саша6: undefined,
-  Антон6: undefined,
-  Даша6: undefined,
+  Саша6: sasha7stage,
+  Антон6: anton6Stage,
+  Даша6: dasha6Stage,
 
   // 7 stage
   Саша7: sasha7stage,
@@ -104,14 +128,17 @@ const characterImages: Record<string, string | undefined> = {
   Тимур9: timur9,
 
   // 10 stage
-  Саша10: undefined,
+  Саша10: sasha10Stage,
   Ксюша10: ksu10,
   КсюшаРадостная10: ksu10Happy,
   КсюшаГрустная10: ksuSad10,
 
   // 11 stage
-  Саша11: undefined,
-  Дима11: undefined,
+  Саша11: sasha11Stage,
+  СашаПофиг11: sashaNotCare11Stage,
+  Дима11: dima11,
+  ДимаГрустный11: dimaSad11,
+  ДимаВеселый11: dimaHappy11,
 
   // 12 stage
   Саша12: sasha12Stage,
